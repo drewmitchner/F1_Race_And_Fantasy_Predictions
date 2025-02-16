@@ -1,5 +1,9 @@
 # F1_Race_And_Fantasy_Predictions
 ML and Monte-Carlo modeling for predicting Formula 1 race results and optimizing F1 Fantasy scores
+<figure>   
+  <img src="/plots/Abu-Dhabi_2024_MonteCarloResults.png" width="800" height="500">
+    <figcaption><center>Monte-Carlo race place predictions for Abu-Dhabi, 2024.</center></figcaption>
+</figure>
 
 ## Table of Contents
 1. Overview

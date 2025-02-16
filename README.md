@@ -22,3 +22,10 @@ The methodology presented implements new details generally not seen in order to 
 ## 2. Depencies
 * Python 3
 
+## 3. Methodology
+The project contains 5 Juptyter Notebooks:
+1. [F1 Predictions 1 - Clean Data.ipynb](F1%Predictions%1%-%Clean%Data.ipynb)
+2. [F1 Predictions 2 - EDA.ipynb](F1%Predictions%2%-%EDA.ipynb)
+3. [F1 Predictions 3 - Model Building.ipynb](F1%Predictions%3%-%Model%Building.ipynb)
+4. [F1 Predictions 4 - Monte Carlo.ipynb](F1%Predictions%4%-%Monte%Carlo.ipynb)
+5. [F1 Predictions 5 - Team Optimization.ipynb](F1%Predictions%5%-%Team%Optimization.ipynb)

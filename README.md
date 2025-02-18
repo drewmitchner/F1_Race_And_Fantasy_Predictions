@@ -71,15 +71,16 @@ As a first baseline, multiple linear regression is used to predict both race pla
   <img src="/plots/F1_LinModel_FantasyPoints_preQual.png" width="400" height="250">
   <figcaption><center>F1 Fantasy points predictions when only including pre-qualifying data.</center></figcaption>
 </figure>
+<br/><br/>
 The two models show that the inclusion of qualifying data (Q1/2/3 times and positions, as well as starting grid position) improves the R<sub>2</sub> from 0.42 to 0.50. It's a notable dropoff to not have the qualifying data, but the pre-qualifying model still retains notable predictive capability despite lacking the single most effective predictor in starting grid position.
 <br/><br/>
 An important limitation of linear regression is the inability to handle missing data. This significantly cuts into an already limited dataset. To address this and to build models of increasing complexity, the next several models looked at are XGBoost forest methods. The next two plots look at predicting final race place, again both with and without qualifying results.
 <figure>   
-  <img src="/plots/F1_XGBoost_RacePosition.png" width="450" height="200">
+  <img src="/plots/F1_XGBoost_RacePosition.png" width="400" height="250">
   <figcaption><center>XGBoost race position predictions when including qualifying data and starting grid information.</center></figcaption>
 </figure>
 <figure>   
-  <img src="/plots/F1_XGBoost_RacePosition_preQual.png" width="450" height="200">
+  <img src="/plots/F1_XGBoost_RacePosition_preQual.png" width="400" height="250">
   <figcaption><center>XGBoost race position predictions when only including pre-qualifying data.</center></figcaption>
 </figure>
 
@@ -139,7 +140,7 @@ In this section, predicted driver and constructor points are loaded for a user-s
 <br/><br/>
 The table below shows the optimal team selection for the 2024 Abu-Dhabi Grand Prix using a typical budget around this point in the season of 128 million.
 <figure>   
-  <img src="/plots/Abu-Dhabi_2024_OptimalTeam.png" width="500" height="300">
+  <img src="/plots/Abu-Dhabi_2024_OptimalTeam.png" width="800" height="300">
   <figcaption><center>Optimal F1 Fantasy team selection for Abu-Dhabi, 2024.</center></figcaption>
 </figure>
 
@@ -153,3 +154,4 @@ While the model presented yields good predictive results, there is likely a host
 ### Fantasy Specific Updates
 * **Predict DNF's**: Winning a Grand Prix is worth 25 points. In terms of magnitude, the next most impactful events for fantasy purposes are DNF's, with a penalty of a massive -20 points. Over the 10 year period sampled, a driver experienced a DNF on average about 10% of the time. But blindly assigning a 10% chance of a DNF to every driver is certainly missing relevant details. A model trained to specifically predict DNF's may incorporate periodic constructor reliability (constructors may have ups and downs in terms of car reliability), driver specifics (certain drivers may driver more aggressively, or are just plain bad), starting grid position (do cars starting in a crowded midfield experience more crashes than cars out in front or way behind?), or the current F1 standings (are drivers more likely to take risks late in the season with ground to make up?). It's possible that better DNF predictions are more important than Grand Prix winner predictions for fantasy purposes.
 * **Constructor Pit Stop Speed**: Certain constructors have shown historically better pit stop times. This could be factored into the constructor predicted points model. Additionally, in certain circuits where the two-stop strategy is more likely than a one-stop the teams with better average pit stop times have two additional shots at the bonus points, reducing variance (conversely, an early DNF will reduce the expected number of pit stops).
+* **Additional Fantasy Rules**: The current model does not take into account "off-nominal" circumstances, including one-time chip uses (Extra DRS, Limitless, etc.), additional point availability during Sprint Weekends, limited number of free transfer between weeks, and driver price changes based on results. For some of these, the base predictions are a suitable replacement. But future versions may include other ways of addressing these specific rules.

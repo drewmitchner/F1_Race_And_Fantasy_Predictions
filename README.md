@@ -107,12 +107,27 @@ The table below breaks down the specific race place probabilities for each drive
 </figure>
 In the specific Grand Prix pictured, the model "correctly" identified the winner as Lando Norris. However, it underestimated the performance of the two Ferrari drivers, who had poor practice times but bounced back in the Grand Prix (though with a significant boost from Verstappen and Piastri touching and losing time at the first corner).
 <br/><br/>
-Finally for this section, predicted race place is converted into predicted fantasy points. To assist this, historical data was used to correlate finishing position with fantasy points. The two plots below show the correlations for finishers inside the top 10 and outside the top 10.
+Finally for this section, predicted race place is converted into predicted fantasy points. To assist this, historical data was used to correlate finishing position with fantasy points. The plot below shows the correlation this correlation for finishers in the top 10 only. For finishers outside the top 10, there was found to be only minimal correlation between race place and fantasy points (R<sub>2</sub>=0.11).
 <figure>   
-  <img src="/plots/F1_XGBoost_RacePosition.png" width="400" height="250">
+  <img src="/plots/F1_FantasyPoints_vs_RacePosition.png" width="400" height="250">
   <figcaption><center>XGBoost race position predictions when including qualifying data and starting grid information.</center></figcaption>
 </figure>
-<figure>   
-  <img src="/plotsF1_XGBoost_RacePosition_preQual.png" width="400" height="250">
-  <figcaption><center>XGBoost race position predictions when only including pre-qualifying data.</center></figcaption>
-</figure>
+The single variable linear regression shows a strong fit with R<sub>2</sub>=0.69. The line of best fit represents Fantasy Points = 39.39 + -3.58*race_position. The Grand Prix winner on average has received 35.8 fantasy points, and each successive place on average receives 3.58 fewer points down to 10th place. 
+<br/><br/>
+It is important to note that for each race position, the distribution is skewed right. That is, there are a handful of outliers who score far more than the average. These points typically represent drivers who start come from far back on the grid to have excellent finishes, netting a large number of positions gained, overtakes, and likely driver-of-the-day points along the way. Potential future work may include a better model for these race position to points conversion. For example, it is reasonable that Verstappen winning from pole would likely receive fewer points than if Gasly (1.2% to win in Abu-Dhabi) were to pull off a stunning upset.
+<br/><br/>
+For drivers finishing outside the top 10, due to the lack of correlation for those places, each driver is assumed to get 2 points which is the average for drivers not finishing in the top 10 (includes DNF's).
+<br/><br/>
+The next piece in predicting fantasy points is predicting the scores of the individual constructors. In general, the score for each constructor is the sum of the two drivers, plus bonus points for qualifying performance and for 1st, 2nd, and 3rd fastest pit stops.
+<br/><br/>
+For qualifying performance, points are awarded according the following game rules:
+- Neither driver reaches Q2:	-1 point
+- One driver reaches Q2:	1 point
+- Both drivers reach Q2:	3 points
+- One driver reaches Q3:	5 points
+- Both drivers reach Q3:	10 points
+The dataset used did not include fastest pit stop time data. However, when looking at the data from last season, the top scoring teams also tended to have the fastest pit stops. Therefore it was a reasonable assumption to include a factorto increase constructor scores by about 10% to be in line with historic point averages.
+<br/><br/>
+The bottom of the notebook provides a section for the user to input a year and circuit to generate the predicted driver and constructor points for that Grand Prix. The two dataframes are saved to be used in the following team optimization section.
+
+### F1 Predictions 5 - Team Optimization.ipynb

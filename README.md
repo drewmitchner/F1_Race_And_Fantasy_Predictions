@@ -143,4 +143,13 @@ The table below shows the optimal team selection for the 2024 Abu-Dhabi Grand Pr
   <figcaption><center>Optimal F1 Fantasy team selection for Abu-Dhabi, 2024.</center></figcaption>
 </figure>
 
-##
+## Further Work
+While the model presented yields good predictive results, there is likely a host of additional ways performance could be improved. Some ideas most relevant in my mind and will likely come in future versions are listed below, sorted into general F1 modeling and fantasy specific improvements:
+### General F1 Modeling
+* **AI & and Deep Neural Nets**: F1 data is sufficiently complex that a more involved model will likely show better performance.
+* **Rookie Driver Status**: Decision tree methods such as the XGBoost model used have difficulty with extrapolation. This is a noted deficiency for rookie drivers. There are certainly a myriad of assumptions and work arounds with the current model, but a future model may have add the "rookie" status for drivers in either their first F1 season for first few races.
+* **Additional Circuit & Weather Info**: Does the upcoming circuit have many low-speed corners? Several long straights with advantageous DRS sections? Do certain drivers or constructors do better in the rain than others?
+
+### Fantasy Specific Updates
+* **Predict DNF's**: Winning a Grand Prix is worth 25 points. In terms of magnitude, the next most impactful events for fantasy purposes are DNF's, with a penalty of a massive -20 points. Over the 10 year period sampled, a driver experienced a DNF on average about 10% of the time. But blindly assigning a 10% chance of a DNF to every driver is certainly missing relevant details. A model trained to specifically predict DNF's may incorporate periodic constructor reliability (constructors may have ups and downs in terms of car reliability), driver specifics (certain drivers may driver more aggressively, or are just plain bad), starting grid position (do cars starting in a crowded midfield experience more crashes than cars out in front or way behind?), or the current F1 standings (are drivers more likely to take risks late in the season with ground to make up?). It's possible that better DNF predictions are more important than Grand Prix winner predictions for fantasy purposes.
+* **Constructor Pit Stop Speed**: Certain constructors have shown historically better pit stop times. This could be factored into the constructor predicted points model. Additionally, in certain circuits where the two-stop strategy is more likely than a one-stop the teams with better average pit stop times have two additional shots at the bonus points, reducing variance (conversely, an early DNF will reduce the expected number of pit stops).

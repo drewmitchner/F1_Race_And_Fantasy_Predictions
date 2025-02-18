@@ -8,9 +8,8 @@ ML and Monte-Carlo modeling for predicting Formula 1 race results and optimizing
 ## Table of Contents
 1. Overview
 2. Dependencies
-3. Methodology
-4. Results
-5. Further Work
+3. Methodology & Results
+4. Further Work
 
 ## 1. Overview
 This project uses historical F1 data from the F1db page (Citation needed) to build prediction models for Formula 1 races and fantasy game. Historic data is pre-processed, analyzed, and various prediction models are attempted with the best performing XGBoost model selected for further predictions. Individual driver predictions are pitted against each other using Monte-Carlo method to simulate each Grand Prix 500+ times. The race place probabilities of the Monte-Carlo are translated into predicted F1 Fantasy points, and Linear Programming is used to build an optimal F1 Fantasy team within a given budget.
@@ -22,7 +21,7 @@ The methodology presented implements new details generally not seen in order to 
 ## 2. Depencies
 * Python 3
 
-## 3. Methodology
+## 3. Methodology & Results
 The project contains 5 Juptyter Notebooks:
 1. [F1 Predictions 1 - Clean Data.ipynb](F1%Predictions%1%-%Clean%Data.ipynb)
 2. [F1 Predictions 2 - EDA.ipynb](F1%Predictions%2%-%EDA.ipynb)
@@ -54,6 +53,8 @@ Additionally in the EDA section, a histogram is created for each starting grid t
   <img src="/plots/F1_Finish_vs_GridPosition_Fitted_17-20.png" width="900" height="200">
   <figcaption><center>Race place distribution based on each starting grid position.</center></figcaption>
 </figure>
+<br/><br/>
+
 The fitted distibrutions are used in the Monte-Carlo simulations to inject some reasonable levels of variance into each drivers performance in line with historical data.
 <br/><br/>
 The beta distributions do a reasonable job of capturing the distributions with a couple caveats. In general the fitted line shows higher variance than the actual race data. Additionally, drivers starting near the back of the grid don't finish in the last few positions as often as the fit indicates. This is likely due to a couple drivers every race experiencing a DNF, bumping those starting in the back up a couple places. Future work may focus on refining these fitted distibutions.
@@ -74,13 +75,15 @@ The two models show that the inclusion of qualifying data (Q1/2/3 times and posi
 <br/><br/>
 An important limitation of linear regression is the inability to handle missing data. This significantly cuts into an already limited dataset. To address this and to build models of increasing complexity, the next several models looked at are XGBoost forest methods. The next two plots look at predicting final race place, again both with and without qualifying results.
 <figure>   
-  <img src="/plots/F1_XGBoost_RacePosition.png" width="400" height="250">
+  <img src="/plots/F1_XGBoost_RacePosition.png" width="450" height="200">
   <figcaption><center>XGBoost race position predictions when including qualifying data and starting grid information.</center></figcaption>
 </figure>
 <figure>   
-  <img src="/plotsF1_XGBoost_RacePosition_preQual.png" width="400" height="250">
+  <img src="/plots/F1_XGBoost_RacePosition_preQual.png" width="450" height="200">
   <figcaption><center>XGBoost race position predictions when only including pre-qualifying data.</center></figcaption>
 </figure>
+
+<br/><br/>
 The XGBoost models show marked improvement over the simple regression models, increasing the R<sub>2</sub> performance on the test dataset from 0.5 to 0.67 and from 0.42 to 0.58 for both the post- and pre-qualifying predictor sets, respectively. It is interesting, and probably a comfort, that the decrease in performance when removing qualifying data is the same across the two methods. Additionally, note that the pre-qualifying XGBoost model outperforms even the post-qualifying linear regression model.
 <br/><br/>
 For these XGBoost models, inclusion of driver "form" (race place and fantasy points from the past N grand prix's) was experimented with. Inclusion of 2-3 prior race results was find to slightly boost performance on the order of a couple percentage points. Including additional prior races saw no benefit and even, in some cases, worse performance as the model began overfitting. The final model uses a driver's prior 2 grand prix results.
@@ -105,6 +108,7 @@ The table below breaks down the specific race place probabilities for each drive
   <img src="/plots/Abu-Dhabi_2024_MonteCarloResults.png" width="600" height="350">
     <figcaption><center>Monte-Carlo race place predictions for Abu-Dhabi, 2024.</center></figcaption>
 </figure>
+<br/><br/>
 In the specific Grand Prix pictured, the model "correctly" identified the winner as Lando Norris. However, it underestimated the performance of the two Ferrari drivers, who had poor practice times but bounced back in the Grand Prix (though with a significant boost from Verstappen and Piastri touching and losing time at the first corner).
 <br/><br/>
 Finally for this section, predicted race place is converted into predicted fantasy points. To assist this, historical data was used to correlate finishing position with fantasy points. The plot below shows the correlation this correlation for finishers in the top 10 only. For finishers outside the top 10, there was found to be only minimal correlation between race place and fantasy points (R<sub>2</sub>=0.11).
@@ -131,3 +135,12 @@ The dataset used did not include fastest pit stop time data. However, when looki
 The bottom of the notebook provides a section for the user to input a year and circuit to generate the predicted driver and constructor points for that Grand Prix. The two dataframes are saved to be used in the following team optimization section.
 
 ### F1 Predictions 5 - Team Optimization.ipynb
+In this section, predicted driver and constructor points are loaded for a user-specified Grand Prix. Driver and constructor fantasy "costs" are added. Linear Programming is used to find the team that maximizes predicted fantasy points while staying within a limited budget. The optimizer includes assigning the DRS boost (2x points) to a specific driver, as well as the option to force include or exclude certain drivers or constructors. This allows a user to override the algorithms selection if certain information is available to the public but not part of the model's predictor set (e.g. a certain driver expected to take an engine grid penalty), or if the user just likes a certain driver and/or constructor.
+<br/><br/>
+The table below shows the optimal team selection for the 2024 Abu-Dhabi Grand Prix using a typical budget around this point in the season of 128 million.
+<figure>   
+  <img src="/plots/Abu-Dhabi_2024_OptimalTeam.png" width="500" height="300">
+  <figcaption><center>Optimal F1 Fantasy team selection for Abu-Dhabi, 2024.</center></figcaption>
+</figure>
+
+##
